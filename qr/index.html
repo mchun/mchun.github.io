@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>QR Code</title>
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
 </head>
 <body>
@@ -17,20 +17,9 @@
       QRCode.toCanvas(document.getElementById('canvas'), window.location.href.substring(window.location.href.indexOf("=")+1), {width:300, errorCorrectionLevel:"h"}, function (error) {
         if (error) {
           console.error(error)
-        } else {
-          // console.log('success!');
         }
       });
     }
-    // const urlSearchParams = new URLSearchParams(window.location.search);
-    // const params = Object.fromEntries(urlSearchParams.entries());
-    // console.log(params);
-    // if (params.url){
-    //   document.getElementById("text").innerHTML=params.url;
-    // } else {
-    //   document.getElementById("text").innerHTML="no url";
-    // }
-    // document.getElementById("text").innerHTML=;
   </script>
 </body>
 </html>
