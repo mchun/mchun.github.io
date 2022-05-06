@@ -1,17 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Code</title>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
-</head>
-<body>
-  <h1 id="text" style="text-align: center;"></h1>
-  <canvas id="canvas" style="display:block; margin:0 auto"></canvas>
-  <script>
-    if (window.location.href.indexOf("=")==-1){
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>QR Code</title><script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script></head><body><h1 id="text" style="text-align: center;"></h1><canvas id="canvas" style="display:block; margin:0 auto"></canvas><script>if (window.location.href.indexOf("=")==-1){
       document.getElementById("text").innerHTML="no URL";
     } else {
       QRCode.toCanvas(document.getElementById('canvas'), window.location.href.substring(window.location.href.indexOf("=")+1), {width:300, errorCorrectionLevel:"h"}, function (error) {
@@ -19,7 +6,4 @@
           console.error(error)
         }
       });
-    }
-  </script>
-</body>
-</html>
+    }</script></body></html>
