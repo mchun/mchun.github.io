@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keep Bluetooth Alive</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    /* Ensure body takes full height and remove margins */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #EDF9FC;
+    }
+
+    h1, p {
+      color: #0C3843;
+    }
+
+    /* Flex container for centering */
+    .container {
+      text-align: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #219ebc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:disabled {
+      background-color: #CCCCCC;
+    }
+
+    /* Animation container */
+    .animation-container {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      opacity: 0; /* Initially hidden */
+      transition: opacity 0.3s ease-in-out; /* Smooth transition */
+    }
+
+    .animation-container.active {
+      opacity: 1; /* Fully visible when active */
+    }
+
+    .dot {
+      width: 15px;
+      height: 15px;
+      margin: 5px;
+      background-color: #219ebc;
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+
+    .dot:nth-child(1) { animation-delay: 0s; }
+    .dot:nth-child(2) { animation-delay: 0.3s; }
+    .dot:nth-child(3) { animation-delay: 0.6s; }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 0.2;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.5);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Keep Bluetooth Alive</h1>
+    <p>Click the button below to toggle silent audio playback and keep your Bluetooth connection active.</p>
+    <button id="playPauseButton">Play Silent Audio</button>
+    <div id="animationContainer" class="animation-container">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <audio id="silentAudio" loop>
+      <source src="silent.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+  <script>
+    // Reference the button, audio, and animation container
+    const playPauseButton = document.getElementById('playPauseButton');
+    const silentAudio = document.getElementById('silentAudio');
+    const animationContainer = document.getElementById('animationContainer');
+
+    // Toggle audio playback and animation
+    playPauseButton.addEventListener('click', () => {
+      if (silentAudio.paused) {
+        silentAudio.play().then(() => {
+          playPauseButton.textContent = 'Pause Silent Audio';
+          animationContainer.classList.add('active'); // Show animation
+        }).catch(error => {
+          console.error('Error playing audio:', error);
+          alert('Unable to play audio. Please check your browser settings.');
+        });
+      } else {
+        silentAudio.pause();
+        playPauseButton.textContent = 'Play Silent Audio';
+        animationContainer.classList.remove('active'); // Hide animation
+      }
+    });
+
+    // Register service worker for PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./service-worker.js')
+        .then(registration => {
+          console.log('Service Worker registered:', registration);
+        })
+        .catch(error => {
+          console.error('Service Worker registration failed:', error);
+        });
+    }
+  </script>
+</body>
+</html>
