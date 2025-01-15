@@ -1,10 +1,10 @@
 {
-  "name": "Keep Bluetooth Alive",
-  "short_name": "KeepAlive",
+  "name": "Keep Connected",
+  "short_name": "Keep Connected",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#007BFF",
+  "background_color": "#EDF9FC",
+  "theme_color": "#219ebc",
   "icons": [
     {
       "src": "icon-192.png",
