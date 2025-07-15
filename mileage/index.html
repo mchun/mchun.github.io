@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuel Efficiency Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            font-weight: 700;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: scale(1.02);
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px 0;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .result.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .result h2 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .mpg-value {
+            font-size: 3em;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .unit {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 5px;
+        }
+
+        .cost-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            color: white;
+        }
+
+        .error {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .error.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .conversion-note {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #34495e;
+            font-size: 0.9em;
+            border-left: 4px solid #667eea;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .mpg-value {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⛽ Fuel Efficiency Calculator</h1>
+        
+        <div class="input-group">
+            <label for="litres">Litres of Petrol Purchased:</label>
+            <input type="number" id="litres" step="0.01" placeholder="e.g., 45.5">
+        </div>
+        
+        <div class="input-group">
+            <label for="cost">Cost in GBP (£):</label>
+            <input type="number" id="cost" step="0.01" placeholder="e.g., 67.50">
+        </div>
+        
+        <div class="input-group">
+            <label for="miles">Miles Driven:</label>
+            <input type="number" id="miles" step="0.1" placeholder="e.g., 425.2">
+        </div>
+        
+        <button class="calculate-btn" onclick="calculateMPG()">Calculate MPG</button>
+        
+        <div id="result" class="result">
+            <h2>Your Fuel Efficiency</h2>
+            <div class="mpg-value" id="mpgValue">0.0</div>
+            <div class="unit">Miles Per Gallon</div>
+            <div class="cost-info">
+                <div>Cost per litre: £<span id="costPerLitre">0.00</span></div>
+                <div>Cost per gallon: £<span id="costPerGallon">0.00</span></div>
+                <div>Cost per mile: £<span id="costPerMile">0.00</span></div>
+            </div>
+        </div>
+        
+        <div id="error" class="error"></div>
+        
+        <div class="conversion-note">
+            <strong>Note:</strong> This calculator converts litres to UK gallons (1 UK gallon = 4.546 litres) to give you the traditional UK MPG measurement.
+        </div>
+    </div>
+
+    <script>
+        function calculateMPG() {
+            // Get input values
+            const litres = parseFloat(document.getElementById('litres').value);
+            const cost = parseFloat(document.getElementById('cost').value);
+            const miles = parseFloat(document.getElementById('miles').value);
+            
+            // Clear previous results
+            document.getElementById('result').classList.remove('show');
+            document.getElementById('error').classList.remove('show');
+            
+            // Validate inputs
+            if (isNaN(litres) || isNaN(cost) || isNaN(miles)) {
+                showError('Please enter valid numbers for all fields.');
+                return;
+            }
+            
+            if (litres <= 0 || cost <= 0 || miles <= 0) {
+                showError('All values must be greater than zero.');
+                return;
+            }
+            
+            // Convert litres to UK gallons (1 UK gallon = 4.546 litres)
+            const gallons = litres / 4.546;
+            
+            // Calculate MPG
+            const mpg = miles / gallons;
+            
+            // Calculate cost information
+            const costPerLitre = cost / litres;
+            const costPerGallon = costPerLitre * 4.546;
+            const costPerMile = cost / miles;
+            
+            // Display results
+            document.getElementById('mpgValue').textContent = mpg.toFixed(1);
+            document.getElementById('costPerLitre').textContent = costPerLitre.toFixed(3);
+            document.getElementById('costPerGallon').textContent = costPerGallon.toFixed(2);
+            document.getElementById('costPerMile').textContent = costPerMile.toFixed(3);
+            
+            // Show result with animation
+            setTimeout(() => {
+                document.getElementById('result').classList.add('show');
+            }, 100);
+        }
+        
+        function showError(message) {
+            document.getElementById('error').textContent = message;
+            setTimeout(() => {
+                document.getElementById('error').classList.add('show');
+            }, 100);
+        }
+        
+        // Add enter key support
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateMPG();
+            }
+        });
+        
+        // Add input validation and formatting
+        document.getElementById('cost').addEventListener('input', function(e) {
+            // Limit to 2 decimal places for currency
+            const value = e.target.value;
+            if (value.includes('.')) {
+                const parts = value.split('.');
+                if (parts[1] && parts[1].length > 2) {
+                    e.target.value = parts[0] + '.' + parts[1].slice(0, 2);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
